@@ -437,5 +437,17 @@ async def update_incident(
     }
 
 
+HTTP_HOST = "0.0.0.0"
+HTTP_PORT = 8765
+
+
 if __name__ == "__main__":
-    mcp.run(transport="stdio")
+    import sys
+
+    # Default: stdio. `--http` flag or SNOW_MCP_TRANSPORT=http selects streamable HTTP
+    # (endpoint: http://<host>:8765/mcp).
+    use_http = "--http" in sys.argv[1:] or os.getenv("SNOW_MCP_TRANSPORT", "").lower() == "http"
+    if use_http:
+        mcp.run(transport="streamable-http", host=HTTP_HOST, port=HTTP_PORT)
+    else:
+        mcp.run(transport="stdio")

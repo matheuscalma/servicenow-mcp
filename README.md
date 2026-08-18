@@ -32,6 +32,8 @@ must launch it):
 uv run server.py
 ```
 
+**Run as HTTP** (streamable HTTP on `http://0.0.0.0:8765/mcp` instead of stdio): `uv run server.py --http`, or set `SNOW_MCP_TRANSPORT=http`.
+
 ### Registering with an MCP client
 
 Point the client at `uv` with the project directory so the `.venv` and `.env` are picked up:
