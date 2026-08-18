@@ -1,0 +1,20 @@
+# Secrets — never bake credentials into the image
+.env
+.env.*
+
+# Local environment / VCS / caches
+.venv
+.git
+.gitignore
+__pycache__
+*.py[oc]
+.pytest_cache
+.mypy_cache
+.ruff_cache
+build
+dist
+*.egg-info
+
+# Docker files themselves
+Dockerfile
+.dockerignore

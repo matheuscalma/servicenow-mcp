@@ -77,6 +77,25 @@ uv run server.py
 
 **Run as HTTP** (streamable HTTP on `http://0.0.0.0:8765/mcp` instead of stdio): `uv run server.py --http`, or set `SNOW_MCP_TRANSPORT=http`.
 
+### Run in Docker
+
+The [`Dockerfile`](Dockerfile) builds an HTTP-mode image (python 3.12-slim + uv, non-root,
+`SNOW_MCP_TRANSPORT=http` preset, port 8765). Credentials are passed at runtime only —
+`.env` is excluded via [`.dockerignore`](.dockerignore) and never copied into the image.
+
+```bash
+docker build -t servicenow-mcp .
+docker run --rm --env-file .env -p 8765:8765 servicenow-mcp
+```
+
+The MCP endpoint is then `http://localhost:8765/mcp`. Verify:
+
+```bash
+curl -s -X POST http://localhost:8765/mcp \
+  -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"curl","version":"0"}}}'
+```
+
 ### Registering with an MCP client
 
 Point the client at `uv` with the project directory so the `.venv` and `.env` are picked up:
