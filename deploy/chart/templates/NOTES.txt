@@ -1,0 +1,14 @@
+servicenow-mcp is deploying.
+
+MCP endpoint (in-cluster):
+  http://{{ include "servicenow-mcp.fullname" . }}.{{ .Release.Namespace }}.svc:{{ .Values.service.port }}/mcp
+
+Reach it from your machine:
+  kubectl -n {{ .Release.Namespace }} port-forward svc/{{ include "servicenow-mcp.fullname" . }} {{ .Values.service.port }}:{{ .Values.service.port }}
+  # then point an MCP client at http://localhost:{{ .Values.service.port }}/mcp
+
+Credentials come from Secret "{{ include "servicenow-mcp.secretName" . }}"
+{{- if .Values.servicenow.existingSecret }} (existing, managed outside this chart).
+{{- else }} (created by this chart from values — for real deployments create the Secret
+yourself and set servicenow.existingSecret).
+{{- end }}

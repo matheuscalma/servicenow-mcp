@@ -1,0 +1,43 @@
+# Default values for servicenow-mcp.
+
+replicaCount: 1
+
+image:
+  repository: servicenow-mcp
+  tag: latest
+  # IfNotPresent so a locally built image (e.g. `kind load docker-image`) is used as-is.
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8765
+
+# ServiceNow connection settings.
+servicenow:
+  # Name of a pre-existing Secret holding SNOW_INSTANCE_URL, SNOW_USERNAME and
+  # SNOW_PASSWORD. Leave empty to have the chart create a Secret from the values below.
+  # Real deployments should set existingSecret and leave the plaintext fields blank —
+  # values files tend to end up in git and Helm release history.
+  existingSecret: ""
+  instanceUrl: ""      # e.g. https://devXXXXXX.service-now.com
+  username: ""
+  password: ""
+  # Optional non-secret settings, passed as environment variables.
+  timeoutSeconds: 15
+
+# HTTP mode is preset in the image; kept explicit here.
+transport: http
+containerPort: 8765
+
+resources: {}
+  # limits:
+  #   cpu: 500m
+  #   memory: 256Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+podAnnotations: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: servicenow-mcp
+description: MCP server bridging AI agents to ServiceNow ITSM (incidents) over streamable HTTP.
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

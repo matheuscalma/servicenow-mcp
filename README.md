@@ -96,6 +96,20 @@ curl -s -X POST http://localhost:8765/mcp \
   -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"curl","version":"0"}}}'
 ```
 
+### Deploy to Kubernetes (Helm)
+
+[`deploy/chart`](deploy/chart) is a minimal chart: Deployment (1 replica), ClusterIP Service
+on 8765, and a Secret with `SNOW_*` credentials built from values. For real deployments create
+the Secret yourself and set `servicenow.existingSecret` instead of putting credentials in values.
+
+```bash
+kind create cluster --name servicenow-mcp && kind load docker-image servicenow-mcp:latest --name servicenow-mcp
+helm install servicenow-mcp deploy/chart \
+  --set servicenow.instanceUrl=https://devXXXXXX.service-now.com \
+  --set servicenow.username=admin --set servicenow.password='...'
+kubectl port-forward svc/servicenow-mcp 8765:8765   # then use http://localhost:8765/mcp
+```
+
 ### Registering with an MCP client
 
 Point the client at `uv` with the project directory so the `.venv` and `.env` are picked up:
